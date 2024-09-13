@@ -6,11 +6,18 @@ import {
 } from "fastify-type-provider-zod";
 import { createGoal } from "../functions/create-goal";
 import z from "zod";
+import { GetWeekPeddingGoals } from "../functions/get-week-pedding-goals";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
+
+app.get("/pending_goals", async () => {
+  const { pendingGoals } = await GetWeekPeddingGoals();
+
+  return { pendingGoals };
+});
 
 app.post(
   "/goals",
